@@ -31,7 +31,7 @@ const useAuth = () => {
   const { chain } = useNetwork()
   const { disconnectAsync } = useDisconnect()
   const { chainId } = useActiveChainId()
-
+console.log("Active chainID",chainId)
   //const [, setSessionChainId] = useSessionChainId()
   //const { t } = useTranslation()
   
