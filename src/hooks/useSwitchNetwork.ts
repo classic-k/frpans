@@ -29,7 +29,10 @@ export function useSwitchNetwork() {
     switchNetwork: _switchNetwork,
     ...switchNetworkArgs
   } = useSwitchNetworkWallet()
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
+  const t = (str: string) => {
+    return str
+  }
   const { toastError } = useToast()
   const { isConnected, connector } = useAccount()
 

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { useCallback } from 'react'
-
 import { useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { MiniProgramConnector } from '@pancakeswap/wagmi/connectors/miniProgram'
@@ -29,8 +28,11 @@ export const useEagerConnect = () => {
 export const useActiveHandle = () => {
   const handleActive = useActive()
   const { toastSuccess } = useToast()
-  const { t } = useTranslation()
-
+  //const { t } = useTranslation()
+const t = (str: string) => {
+  
+return str
+}
   const main = async () => {
     /**
      *  backward

