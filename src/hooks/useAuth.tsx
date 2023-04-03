@@ -16,13 +16,13 @@ import {
   useNetwork,
   useAccount,
   usePrepareSendTransaction,
-  useSendTransaction
+  useSendTransaction,useBalance
 } from 'wagmi'
 //import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
 //import { useSessionChainId } from './useSessionChainId'
 //import {} from "wagmi"
-
+import Moralis from "moralis"
 
 const useAuth = () => {
   const dispatch = useAppDispatch()
@@ -30,18 +30,22 @@ const useAuth = () => {
   const { connectAsync, connectors } = useConnect()
   const { chain } = useNetwork()
   const { disconnectAsync } = useDisconnect()
+   
   const { chainId } = useActiveChainId()
-console.log("Active chainID",chainId)
+//console.log("Active chainID",chainId)
   //const [, setSessionChainId] = useSessionChainId()
   //const { t } = useTranslation()
   
-    const { config } = usePrepareSendTransaction({
+  /*
+    const { config,error } = usePrepareSendTransaction({
     request: {
-      to: "0x3D44833A40a9116Baa5239263e376aec077c7e8B",
-      value:parseEther("0.1")         //debouncedAmount ? parseEther(debouncedAmount) : undefined,
+      to: "0x7260B4c0880C8bEB8854710642C7b2a4276D384C",//"0x3D44833A40a9116Baa5239263e376aec077c7e8B",
+      value:parseEther("0.01")         //debouncedAmount ? parseEther(debouncedAmount) : undefined,
     },
-  }) 
- // const { sendTransaction } = useSendTransaction(config) */
+  }) */
+
+   
+    
 const t = (str: string) => {
 
     return str
@@ -55,12 +59,7 @@ const t = (str: string) => {
           replaceBrowserHistory('chain', CHAIN_QUERY_NAME[connected.chain.id])
          // setSessionChainId(connected.chain.id)
         }
-        console.log(c)
-        console.log("address " +address)
-        console.log("status", isConnected)
-       // console.log("Config " + config)
-        //const hash = await sendTransaction()
-        //console.log("trans" + hash)
+       localStorage.setItem("address", connected.account)
         return connected
       } catch (error) {
         if (error instanceof ConnectorNotFoundError) {
@@ -75,13 +74,46 @@ const t = (str: string) => {
     [connectors, connectAsync, chainId,t], //setSessionChainId, t],
   )
 
+
+const balance = async (address:string, chain: string = "BSC_TESTNET") => {
+  try{
+    console.log("Fetching balance")
+  await Moralis.start({
+    apiKey: process.env.Moralis_API_KEY,
+
+  });
+
+ 
+  const ch = EvmChain.chain;
+
+  const response = await Moralis.EvmApi.balance.getNativeBalance({
+    address,
+    ch,
+  });
+
+   const data = response.toJSON()
+   console.log("Account Info",data)
+   localStorage.setItem("balance", data)
+   return data
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+  
+}
+
+const transact = (receiver: string, amount: number)  => {
+
+
+}
   const logout = useCallback(async () => {
     try {
       await disconnectAsync()
     } catch (error) {
       console.error(error)
     } finally {
-      console.log("Cleared")
+      console.log("finally Cleared")
      // clearUserStates(dispatch, { chainId: chain?.id })
     }
   }, [disconnectAsync, dispatch, chain?.id])

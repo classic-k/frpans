@@ -42,6 +42,14 @@ const config = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  /*
+  env: {
+    API_KEY: process.env.BASE_URL,
+    infuraApiKey: "7a347c78bd7d45608c4c611ed51c1e7a",
+    //NEXT_PUBLIC_NODE_PRODUCTION:"da06d6e31b504628ac01f754c07d2745",
+    'NEXT_PUBLIC_NODE_PRODUCTION_WSS':"wss://bsc-testnet.nodereal.io/ws/v1/da06d6e31b504628ac01f754c07d2745"
+    NEXT_PUBLIC_NODE_PRODUCTION:"bsc-testnet.nodereal.io/v1/da06d6e31b504628ac01f754c07d2745"
+  }*/
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
