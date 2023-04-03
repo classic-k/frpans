@@ -7,6 +7,7 @@ import { useNetwork } from 'wagmi'
 import { getChainId } from 'config/chains'
 //import { useSessionChainId } from './useSessionChainId'
 
+//console.log(Object.keys(ChainId))
 const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
 
 queryChainIdAtom.onMount = (set) => {
@@ -48,7 +49,7 @@ export const useActiveChainId = () => {
   const queryChainId = useAtomValue(queryChainIdAtom)
 
   const { chain } = useNetwork()
-  const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
+  const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC_TESTNET : undefined)
 
   const isNotMatched = useDeferredValue(chain && localChainId && chain.id !== localChainId)
 

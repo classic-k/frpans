@@ -14,6 +14,7 @@ export function WagmiProvider<TProvider extends Provider, TWebSocketProvider ext
   )
 }
 
+
 const Web3LibraryContext = React.createContext<Web3Provider | undefined>(undefined)
 
 export const useWeb3LibraryContext = () => {

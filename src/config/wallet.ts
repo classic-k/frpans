@@ -16,7 +16,7 @@ export enum ConnectorNames {
   Ledger = 'ledger',
   TrustWallet = 'trustWallet',
 }
-
+const host = process.env.do_host
 const delay = (t: number) => new Promise((resolve) => setTimeout(resolve, t))
 
 const createQrCode = (chainId: number, connect) => async () => {
@@ -62,9 +62,9 @@ const walletsConfig = ({
         return isMetamaskInstalled() && metaMaskConnector.ready
       },
       connectorId: ConnectorNames.MetaMask,
-      deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
+      deepLink: `https://metamask.app.link/dapp/${host}/`,
       qrCode,
-      downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
+      downloadLink: `https://metamask.app.link/dapp/${host}/`,
     },
     {
       id: 'binance',
@@ -97,7 +97,7 @@ const walletsConfig = ({
       get installed() {
         return !!getTrustWalletProvider()
       },
-      deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
+      deepLink: `https://link.trustwallet.com/open_url?coin_id=20000714&url=${host}`,
       downloadLink: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph',
       guide: {
         desktop: 'https://trustwallet.com/browser-extension',

@@ -10,6 +10,8 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import {infuraProvider} from "wagmi/providers"
+import { publicProvider } from 'wagmi/providers/public'
 import { SafeConnector } from './safeConnector'
 
 const CHAINS = [bsc, mainnet, bscTestnet, goerli]
@@ -20,42 +22,52 @@ const getNodeRealUrl = (networkName: string) => {
   switch (networkName) {
     case 'homestead':
       if (process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) {
-        host = `eth-mainnet.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_ETH}`
+        host = "eth-mainnet.nodereal.io/v1/da06d6e31b504628ac01f754c07d2745"//`eth-mainnet.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_ETH}`
       }
       break
     case 'goerli':
       if (process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI) {
-        host = `eth-goerli.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI}`
+        host = "eth-goerli.nodereal.io/v1/eth-mainnet.nodereal.io/v1/da06d6e31b504628ac01f754c07d2745" //`eth-goerli.nodereal.io/v1/eth-mainnet.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI}`
       }
       break
     default:
-      host = null
+      host = "bsc-testnet.nodereal.io/v1/da06d6e31b504628ac01f754c07d2745" //"data-seed-prebsc-1-s1.binance.org:8545/"//null
   }
-
+//console.log("host name",host)
+//console.log("network name",networkName)
+//console.log("Hostname",host)
   if (!host) {
+   // console.log("No host")
     return null
   }
 
   const url = `https://${host}`
+
   return {
     http: url,
-    webSocket: url.replace(/^http/i, 'wss').replace('.nodereal.io/v1', '.nodereal.io/ws/v1'),
+    webSocket:"wss://bsc-testnet.nodereal.io/ws/v1/da06d6e31b504628ac01f754c07d2745" //url.replace(/^http/i, 'wss').replace('.nodereal.io/v1', '.nodereal.io/ws/v1'),
   }
 }
 
 export const { provider, chains } = configureChains(CHAINS, [
-  jsonRpcProvider({
+/*  infuraProvider({
+          apiKey: process.env.infuraApiKey,
+     // stallTimeout: 1_000,
+
+  }),*/
+ jsonRpcProvider({
     rpc: (chain) => {
-      if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {
+     /* if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {
         return { http: process.env.NEXT_PUBLIC_NODE_PRODUCTION }
       }
       if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
         return { http: 'https://cloudflare-eth.com' }
       }
-
+*/
       return getNodeRealUrl(chain.network) || { http: chain.rpcUrls.default.http[0] }
     },
   }),
+ publicProvider(),
 ])
 
 export const injectedConnector = new InjectedConnector({
