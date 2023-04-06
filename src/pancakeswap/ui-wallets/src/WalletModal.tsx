@@ -389,10 +389,11 @@ function DesktopModal<T>({
 }
 
 export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
-  const { wallets: _wallets, login, docLink,bals, docText, address,balance,...rest } = props
-const [add, setAdd] = useState(address)
-  const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
+  const { wallets: _wallets, login, docLink,bals, docText,...rest } = props
 
+  const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
+/*
+const [add, setAdd] = useState(address)
 const [bal, setBal] = useState("") 
 
 /*
@@ -411,8 +412,8 @@ const {sendTransaction} = useSendTransaction(config)
   const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
   const [, setSelected] = useSelectedWallet<T>()
   const [, setError] = useAtom(errorAtom)
-  const { t } = useTranslation()
-
+ // const { t } = useTranslation()
+const t = (str: string) => str
   const imageSources = useMemo(
     () =>
       wallets

