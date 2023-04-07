@@ -23,8 +23,8 @@ const ProfileUserMenuItem: React.FC<React.PropsWithChildren<ProfileUserMenuItemP
   disabled,
 }) => {
   const { address: account } = useAccount()
-  const { t } = useTranslation()
-
+  //const { t } = useTranslation()
+const t = (str: string) => str
   if (isLoading) {
     return (
       <UserMenuItem>

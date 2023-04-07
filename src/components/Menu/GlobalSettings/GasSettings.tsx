@@ -5,7 +5,8 @@ import { GAS_PRICE_GWEI, GAS_PRICE } from 'state/types'
 import {useState} from "react"
 
 const GasSettings = () => {
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
+  const t = (str: string) => str
   const [gasPrice, setGasPrice] = useState("3.0")//useGasPriceManager()
 
   return (
