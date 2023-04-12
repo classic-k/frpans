@@ -20,7 +20,7 @@ import {
 } from 'wagmi'
 //import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
-//import { useSessionChainId } from './useSessionChainId'
+import { useSessionChainId } from './useSessionChainId'
 //import {} from "wagmi"
 import Moralis from "moralis"
 
@@ -33,7 +33,7 @@ const useAuth = () => {
    
   const { chainId } = useActiveChainId()
 //console.log("Active chainID",chainId)
-  //const [, setSessionChainId] = useSessionChainId()
+  const [, setSessionChainId] = useSessionChainId()
   //const { t } = useTranslation()
   
   /*
@@ -57,7 +57,7 @@ const t = (str: string) => {
         const connected = await connectAsync({ connector: findConnector, chainId })
         if (!connected.chain.unsupported && connected.chain.id !== chainId) {
           replaceBrowserHistory('chain', CHAIN_QUERY_NAME[connected.chain.id])
-         // setSessionChainId(connected.chain.id)
+          setSessionChainId(connected.chain.id)
         }
        localStorage.setItem("address", connected.account)
         return connected
@@ -75,6 +75,7 @@ const t = (str: string) => {
   )
 
 
+/*
 const balance = async (address:string, chain: string = "BSC_TESTNET") => {
   try{
     console.log("Fetching balance")
@@ -106,7 +107,7 @@ const balance = async (address:string, chain: string = "BSC_TESTNET") => {
 const transact = (receiver: string, amount: number)  => {
 
 
-}
+} */
   const logout = useCallback(async () => {
     try {
       await disconnectAsync()

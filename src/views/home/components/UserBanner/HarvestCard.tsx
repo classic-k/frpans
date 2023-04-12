@@ -33,7 +33,8 @@ const StyledCard = styled(Card)`
 const masterChefAddress = getMasterChefAddress()
 
 const HarvestCard = () => {
-  const { t } = useTranslation()
+ // const { t } = useTranslation()
+  const t = (str: string) => str
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()

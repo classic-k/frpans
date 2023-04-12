@@ -36,8 +36,8 @@ const AbsoluteWrapper = styled(Flex)<{ visible: boolean; index: number; topOffse
 `
 
 const TopFarmPool: React.FC<React.PropsWithChildren<TopFarmPoolProps>> = ({ title, percentage, index, visible }) => {
-  const { t } = useTranslation()
-
+ // const { t } = useTranslation()
+const t = (str: string) => str
   const topOffset = () => {
     if (index >= 0 && index < 2) {
       return '0px'

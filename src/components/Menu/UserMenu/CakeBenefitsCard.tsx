@@ -52,7 +52,8 @@ interface CakeBenefitsCardProps {
 }
 
 const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>> = ({ onDismiss }) => {
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
+  const t = (str: string) => string
   const { data: cakeBenefits, status: cakeBenefitsFetchStatus } = {} //useCakeBenefits()
   const { isMobile } = useMatchBreakpoints()
 

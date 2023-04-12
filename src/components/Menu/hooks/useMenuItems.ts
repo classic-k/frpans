@@ -8,9 +8,10 @@ import config, { ConfigMenuItemsType } from '../config/config'
 
 export const useMenuItems = (): ConfigMenuItemsType[] => {
   const {
-    t,
+   
     currentLanguage: { code: languageCode },
   } = useTranslation()
+  const t = (str:string) => str
   const { chainId } = useActiveChainId()
   const { isDark } = useTheme()
   const menuItemsStatus = useMenuItemsStatus()

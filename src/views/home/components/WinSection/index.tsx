@@ -90,7 +90,8 @@ const topRightImage = {
 }
 
 const WinSection = () => {
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
+  const t = (str: string) => str
   const { theme } = useTheme()
 
   return (
