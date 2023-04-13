@@ -23,8 +23,8 @@ const SlippageTabs = () => {
   const [slippageInput, setSlippageInput] = useState('')
   const [deadlineInput, setDeadlineInput] = useState('')
 
-  const { t } = useTranslation()
-
+  //const { t } = useTranslation()
+const t = (str:string) => str
   const slippageInputIsValid =
     slippageInput === '' || (userSlippageTolerance / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2)
   const deadlineInputIsValid = deadlineInput === '' || (ttl / 60).toString() === deadlineInput

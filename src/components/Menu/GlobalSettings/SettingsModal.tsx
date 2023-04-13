@@ -87,7 +87,8 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] =useState(false) //useMMLinkedPoolByDefault()
   const [tokenRisk, setTokenRisk] = useState()//useUserTokenRisk()
 
-  const { t } = useTranslation()
+ // const { t } = useTranslation()
+  const t = (str: string) => str
   const { isDark, setTheme } = useTheme()
 
   if (showConfirmExpertModal) {

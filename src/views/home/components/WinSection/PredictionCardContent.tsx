@@ -27,7 +27,8 @@ const PredictionCardHeader: React.FC<React.PropsWithChildren<{ preText: string; 
 }
 
 const PredictionCardContent = () => {
-  const { t } = useTranslation()
+  //const { t } = useTranslation()
+  const t = (str: string) => str
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const bnbBusdPrice = useBNBBusdPrice({ forceMainnet: true })

@@ -8,7 +8,8 @@ import StatCardContent from './StatCardContent'
 import GradientLogo from '../GradientLogoSvg'
 
 const Stats = () => {
-  const { t } = useTranslation()
+  const t = (str: string) => str
+  //const { t } = useTranslation()
   const { theme } = useTheme()
 
   const { data: tvl } = useSWRImmutable('tvl')

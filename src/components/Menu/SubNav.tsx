@@ -24,7 +24,8 @@ const getActiveIndex = (pathname: string): number => {
 
 const Nav = () => {
   const { pathname } = useRouter()
-  const { t } = useTranslation()
+  const t = (str: string) => str
+  //const { t } = useTranslation()
   return (
     <StyledNav>
       <ButtonMenu activeIndex={getActiveIndex(pathname)} scale="sm" variant="subtle">

@@ -5,7 +5,7 @@ import { useDeferredValue } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
 import { getChainId } from 'config/chains'
-//import { useSessionChainId } from './useSessionChainId'
+import { useSessionChainId } from './useSessionChainId'
 
 //console.log(Object.keys(ChainId))
 const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
@@ -29,13 +29,14 @@ queryChainIdAtom.onMount = (set) => {
 }
 
 export function useLocalNetworkChain() {
-  //const [sessionChainId] = useSessionChainId()
+  const [sessionChainId] = useSessionChainId()
   // useRouter is kind of slow, we only get this query chainId once
   const queryChainId = useAtomValue(queryChainIdAtom)
 
   const { query } = useRouter()
 
-  const chainId = +(getChainId(query.chain as string) || queryChainId) //+(sessionChainId || getChainId(query.chain as string) || queryChainId)
+ const chainId = +(sessionChainId || getChainId(query.chain as string) || queryChainId)
+ // const chainId = +(getChainId(query.chain as string) || queryChainId) //+(sessionChainId || getChainId(query.chain as string) || queryChainId)
 
   if (isChainSupported(chainId)) {
     return chainId
@@ -49,8 +50,8 @@ export const useActiveChainId = () => {
   const queryChainId = useAtomValue(queryChainIdAtom)
 
   const { chain } = useNetwork()
-  const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC_TESTNET : undefined)
-
+ const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC_TESTNET : undefined)
+//const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
   const isNotMatched = useDeferredValue(chain && localChainId && chain.id !== localChainId)
 
   return {

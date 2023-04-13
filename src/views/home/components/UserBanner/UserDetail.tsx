@@ -47,7 +47,8 @@ const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
 
 const UserDetail = () => {
   const { profile, isLoading } = useProfile()
-  const { t } = useTranslation()
+  const t = (str: string) => str
+ // const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
