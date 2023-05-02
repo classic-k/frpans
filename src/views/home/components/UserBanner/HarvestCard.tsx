@@ -50,7 +50,7 @@ const HarvestCard = () => {
 
   const earningsText = getEarningsText(numFarmsToCollect, hasCakePoolToCollect, earningsBusd, t)
   const [preText, toCollectText] = earningsText.split(earningsBusd.toString())
-
+  const txt = "EarningsBusd to collect from farm account"
   const harvestAllFarms = useCallback(async () => {
     for (let i = 0; i < farmsWithStakedBalance.length; i++) {
       const farmWithBalance = farmsWithStakedBalance[i]
@@ -81,7 +81,7 @@ const HarvestCard = () => {
           <Flex flexDirection="column" alignItems={['center', null, null, 'flex-start']}>
             {preText && (
               <Text mb="4px" color="textSubtle">
-                {preText}
+                {txt}
               </Text>
             )}
             {!earningsBusd.isNaN() ? (

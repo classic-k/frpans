@@ -13,7 +13,7 @@ export const BLOCKED_ADDRESSES: string[] = [
 export const INITIAL_ALLOWED_SLIPPAGE = 50
 // 20 minutes, denominated in seconds
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
-
+export const dybx = "0xE1E5b83F2821B45Da8208408747A96337C7F0526"
 export { default as ifosConfig } from './ifo'
 export { default as poolsConfig } from './pools'
 

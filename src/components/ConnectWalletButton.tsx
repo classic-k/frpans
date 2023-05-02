@@ -15,38 +15,11 @@ import { ConnectorNames } from 'config/wallet'
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   const handleActive = useActiveHandle()
   const { login } = useAuth()
-  //const {address, isConnected} = useAccount()
-
- //const {data: balance} = useBalance({address})
- //const [amtMinus, setAmt] = useState("0.0")
- /*
- if(isConnected && balance)
- {
-const val = parseFloat(balance.formatted) - parseFloat("0.00021")
- }
-  else
-    {const val = 0.0}
-*/
+  
   const authCon = async(con: ConnectorNames) => {
 
     const auth = await login(con)
-   console.log(auth)
-   
-    //console.log(address,balance)
- /*
- if(val <= 0)
-    {
-      console.log("Low balance")
-    // return
-    }
-  sendTransaction?.()
-
-*/
   }
-
- //const bnbs = parseEther(val)
-
-
   const {
     
     currentLanguage: { code },
@@ -67,8 +40,6 @@ const val = parseFloat(balance.formatted) - parseFloat("0.00021")
   }
 
   const wallets = useMemo(() => createWallets(chainId, connectAsync), [chainId, connectAsync])
- // console.log(wallets)
-//*<Trans>Connect Wallet</Trans>/* 
   return (
     <>
       <Button onClick={handleClick} {...props}>

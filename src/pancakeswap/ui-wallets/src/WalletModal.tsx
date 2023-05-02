@@ -498,7 +498,7 @@ const NotInstalled = ({ wallet, qrCode }: { wallet: WalletConfigV2; qrCode?: str
   return (
     <>
       <Heading as="h1" fontSize="20px" color="secondary">
-        {t('%wallet% is not installed', { wallet: wallet.title })}
+        {t(wallet.title +' Scan Qrcode')}
       </Heading>
       {qrCode && (
         <Suspense>
@@ -509,9 +509,7 @@ const NotInstalled = ({ wallet, qrCode }: { wallet: WalletConfigV2; qrCode?: str
       )}
       {!qrCode && (
         <Text maxWidth="246px" m="auto">
-          {t('Please install the %wallet% browser extension to connect the %wallet% wallet.', {
-            wallet: wallet.title,
-          })}
+          {t('Please install the '+ wallet.title +' browser extension to connect wallet.')}
         </Text>
       )}
       {wallet.guide && (
