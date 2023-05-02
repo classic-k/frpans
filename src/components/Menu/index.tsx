@@ -5,7 +5,7 @@ import { useTranslation, languageList } from '@pancakeswap/localization'
 //import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import useTheme from 'hooks/useTheme'
-//import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
+import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 //import { usePhishingBannerManager } from 'state/user/hooks'
 import UserMenu from './UserMenu'
 import { useMenuItems } from './hooks/useMenuItems'
@@ -15,7 +15,7 @@ import { SettingsMode } from './GlobalSettings/types'
 
 const Menu = (props) => {
   const { isDark, setTheme } = useTheme()
-  const cakePriceUsd = 5.9 //useCakeBusdPrice({ forceMainnet: true })
+  const cakePriceUsd =useCakeBusdPrice({ forceMainnet: true })
   const { currentLanguage, setLanguage } = useTranslation()
    const t = (str: string) => {return str}
   const { pathname } = useRouter()
@@ -60,7 +60,7 @@ const Menu = (props) => {
         activeItem={activeMenuItem?.href}
         activeSubItem={activeSubMenuItem?.href}
         buyCakeLabel={t('Buy CAKE')}
-        buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
+        buyCakeLink="#"
         {...props}
       />
     </>

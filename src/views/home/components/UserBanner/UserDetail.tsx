@@ -16,6 +16,7 @@ import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
+import {useState} from "react"
 
 const Desktop = styled(Flex)`
   align-items: center;
@@ -51,15 +52,14 @@ const UserDetail = () => {
  // const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
-  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
-    useGetUsernameWithVisibility(profile)
+  const [ userUsernameVisibility, setUserUsernameVisibility ] = useState(true)
 
   const toggleUsernameVisibility = () => {
     setUserUsernameVisibility(!userUsernameVisibility)
   }
 
-  const Icon = userUsernameVisibility ? VisibilityOff : VisibilityOn
-
+  const Icon =userUsernameVisibility? VisibilityOff : VisibilityOn
+const welMsg = 'Connected with '+ truncateHash(account)
   return (
     <>
       {(isTablet || isDesktop) && (
@@ -81,7 +81,7 @@ const UserDetail = () => {
             {isLoading || !account ? (
               <Skeleton width={160} height={16} my="4px" />
             ) : (
-              <Text fontSize="16px"> {t('Connected with %address%', { address: truncateHash(account) })}</Text>
+              <Text fontSize="16px"> {t(welMsg)}</Text>
             )}
           </Flex>
         </Desktop>

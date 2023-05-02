@@ -37,10 +37,12 @@ const HarvestCard = () => {
   const t = (str: string) => str
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
-
-  const cakePriceBusd = usePriceCakeBusd()
-  const gasPrice = useGasPrice()
+  //const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = //useFarmsWithBalance()
+  const farmsWithStakedBalance = [5231000]
+  const earningsSum = 2.523
+  const farmEarningsSum = 341.1
+  const cakePriceBusd = 3.0 //usePriceCakeBusd()
+  const gasPrice = 0.0001 //useGasPrice()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numTotalToCollect = farmsWithStakedBalance.length
   const numFarmsToCollect = farmsWithStakedBalance.filter((value) => value.pid !== 0).length

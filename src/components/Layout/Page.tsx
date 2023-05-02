@@ -24,9 +24,10 @@ const StyledPage = styled(Container)`
 
 export const PageMeta: React.FC<React.PropsWithChildren> = () => {
   const {
-    t,
+ 
     currentLanguage: { locale },
   } = useTranslation()
+  const t = (str: string) => str
   const { pathname } = useRouter()
 
   const pageMeta = getCustomMeta(pathname, t, locale)
